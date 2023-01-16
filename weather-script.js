@@ -7,7 +7,11 @@ const options = {
 };
 let searchWeatherButton = document.querySelector(`#search-weather-btn`);
 searchWeatherButton.addEventListener(`click`, getWeatherInfo);
+/**
+ * function to get the weather Info for a given city.
+ */
 async function getWeatherInfo() {
+	console.log(`------getWeatherInfo start------`);
 	let searchedText = document.querySelector(`#searched-text`);
 	let getCityName = document.querySelector(`#searched-text`).value;
 	if (getCityName === ``) {
@@ -25,6 +29,7 @@ async function getWeatherInfo() {
 			.catch(err => { console.error(err) });
 		if (weather.hasOwnProperty(`error`)) {
 			console.log(`Incorrect City Name in API.....`);
+			searchedText.value = ``;
 			alert(`Error while fetching the weather deatils.. City Name can be incorrect...`);
 			displayDefaultWeatherInfo();
 		} else {
@@ -57,8 +62,13 @@ async function getWeatherInfo() {
 			sunsetTime.innerText = `Sunset Time is: ${formatEpochTimeToHumanTime(weather.sunset)}`;
 		}
 	}
+	console.log(`------getWeatherInfo ends------`);
 }
+/**
+ * function to display weather of some common cities.
+ */
 async function getWeatherDetailsOfDifferentPlaces() {
+	console.log(`------getWeatherDetailsOfDifferentPlaces start------`);
 	let cityFirstCloutPct = document.querySelector(`#city-first-pct`);
 	let cityFirstFeelsLike = document.querySelector(`#city-first-feels-like`);
 	let cityFirstHumidity = document.querySelector(`#city-first-humidity`);
@@ -182,7 +192,13 @@ async function getWeatherDetailsOfDifferentPlaces() {
 	cityFourthWindDegrees.innerText = weatherDetailsDelhi.wind_degrees;
 	cityFourthWindSpeed.innerText = `${weatherDetailsDelhi.wind_speed} km/hr`;
 	console.log(`------Fetching Delhi Weather Details ends------`);
+	console.log(`------getWeatherDetailsOfDifferentPlaces start------`);
 }
+/**
+ * function to convert epoch time to human time. 
+ * @param {*} timeInMilliSeconds 
+ * @returns 
+ */
 function formatEpochTimeToHumanTime(timeInMilliSeconds) {
 	let dateObject = new Date(timeInMilliSeconds * 1000);
 	let hour = dateObject.getHours();
@@ -194,7 +210,11 @@ function formatEpochTimeToHumanTime(timeInMilliSeconds) {
 	}
 	return `${hour}: ${minutes} ${timeZone}`;
 }
+/**
+ * function to display deafult weather Info. 
+ */
 async function displayDefaultWeatherInfo() {
+	console.log(`------displayDefaultWeatherInfo start------`);
 	let defaultCityName = `Indore`;
 	console.log(`Logging Searched City Name: ${defaultCityName}`);
 	/**
@@ -205,6 +225,7 @@ async function displayDefaultWeatherInfo() {
 		.then(response => response.json())
 		.then(response => { return response })
 		.catch(err => console.error(err));
+	let displayDefaultWeatherCity = document.querySelector(`#display-default-weather-city`);
 	let temperatureHeading = document.querySelector(`#temp-heading`);
 	let temperatureDisplay = document.querySelector(`#temp-display-actual`);
 	let temperatureMinimum = document.querySelector(`#temp-minimum`);
@@ -217,6 +238,7 @@ async function displayDefaultWeatherInfo() {
 	let windDisplay = document.querySelector(`#wind-display-actual`);
 	let sunriseTime = document.querySelector(`#sunrise-time`);
 	let sunsetTime = document.querySelector(`#sunset-time`);
+	displayDefaultWeatherCity.innerText = `Weather for ${defaultCityName}`;
 	temperatureHeading.innerText = `${weather.temp}°C`;
 	temperatureDisplay.innerText = `Temperature is: ${weather.temp}°C`;
 	temperatureMinimum.innerText = `Minimum Temperature is: ${weather.min_temp}°C`;
@@ -229,6 +251,7 @@ async function displayDefaultWeatherInfo() {
 	windDisplay.innerText = `Wind Speed is: ${weather.wind_speed}`;
 	sunriseTime.innerText = `Sunrise Time is: ${formatEpochTimeToHumanTime(weather.sunrise)}`;
 	sunsetTime.innerText = `Sunset Time is: ${formatEpochTimeToHumanTime(weather.sunset)}`;
+	console.log(`------displayDefaultWeatherInfo ends------`);
 }
 getWeatherDetailsOfDifferentPlaces();
 displayDefaultWeatherInfo();
